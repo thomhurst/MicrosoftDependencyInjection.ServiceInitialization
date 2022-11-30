@@ -39,16 +39,6 @@ services
     .AddInitializers();
 ```
 
-Now any other class can simply reference the Get-only property:
-
-```csharp
-public async Task DoSomething()
-{
-    var myDatabaseClient = new DatabaseClient(_keyvaultConnectionStringProvider.SomeConnectionString);
-    ...
-}
-```
-
 3. In your Program, once your Application/ServiceProvider has been 'Built', but before you 'Run' your app, call `.InitializeAsync()` on your ServiceProvider.
 
 e.g.
@@ -67,4 +57,14 @@ e.g.
         await app.RunAsync();
 ```
 
-4. Done. All your Services that were registered in the container, and implement `IInitializer` will have run, and your application should be ready to run.
+4. Now any other class can simply reference the Get-only property:
+
+```csharp
+public async Task DoSomething()
+{
+    var myDatabaseClient = new DatabaseClient(_keyvaultConnectionStringProvider.SomeConnectionString);
+    ...
+}
+```
+
+5. Done. All your Services that were registered in the container, and implement `IInitializer` will have run, and your application should be ready to run.
