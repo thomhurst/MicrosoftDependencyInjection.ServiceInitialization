@@ -4,6 +4,7 @@ I'm sure you've come across a scenario where you have a class that just needs to
 This could be things like connection strings, or encryption keys, etc.
 
 If we got this on startup, and then cached it, then when providing that value, we don't need to make it async, as we know it for any subsequent code paths.
+
 This means:
 - If your current call-stack isn't async, you don't need to refactor it
 - No Async state machine is created, which could (marginally) improve performance
