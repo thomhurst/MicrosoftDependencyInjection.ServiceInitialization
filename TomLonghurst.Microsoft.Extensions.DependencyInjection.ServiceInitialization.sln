@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization", "TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization\TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.csproj", "{07D42676-3216-4C13-9446-8DAA74010266}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.AspNetCore.Tests", "TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.AspNetCore.Tests\TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.AspNetCore.Tests.csproj", "{F4EDE97D-0E3B-40C9-9349-BA5FC7173159}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07D42676-3216-4C13-9446-8DAA74010266}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07D42676-3216-4C13-9446-8DAA74010266}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07D42676-3216-4C13-9446-8DAA74010266}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07D42676-3216-4C13-9446-8DAA74010266}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4EDE97D-0E3B-40C9-9349-BA5FC7173159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4EDE97D-0E3B-40C9-9349-BA5FC7173159}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4EDE97D-0E3B-40C9-9349-BA5FC7173159}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4EDE97D-0E3B-40C9-9349-BA5FC7173159}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
