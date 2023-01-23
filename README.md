@@ -6,18 +6,21 @@ This could be things like connection strings, or encryption keys, etc.
 If we got this on startup, and then cached it, then when providing that value, we don't need to make it async, as we know it for any subsequent code paths.
 
 This means:
-- If your current call-stack isn't async, you don't need to refactor it
-- No Async state machine is created, which could (marginally) improve performance
-- No delaying the first request to a system, as we don't need to go off and fetch it as this point
+
+* If your current call-stack isn't async, you don't need to refactor it
+* No Async state machine is created, which could (marginally) improve performance
+* No delaying the first request to a system, as we don't need to go off and fetch it as this point
 
 ## Install via Nuget
-`TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization`
+
+ `TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization`
 
 ## Usage
 
 1. Add the interface `IInitializer` to your class, and implement the `InitializeAsync` method.
 
 e.g.
+
 ```csharp
 public class KeyvaultConnectionStringProvider : IKeyvaultConnectionStringProvider, IInitializer
 {
@@ -42,6 +45,7 @@ services
 3. In your Program, once your Application/ServiceProvider has been 'Built', but before you 'Run' your app, call `.InitializeAsync()` on your ServiceProvider.
 
 e.g.
+
 ```csharp
         var builder = WebApplication.CreateBuilder();
 
