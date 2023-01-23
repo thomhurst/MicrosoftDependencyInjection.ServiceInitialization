@@ -37,8 +37,6 @@ public class Tests
         var app = builder.Build();
 
         await app.Services.InitializeAsync();
-
-        await app.RunAsync();
         
         Assert.Multiple(() =>
         {

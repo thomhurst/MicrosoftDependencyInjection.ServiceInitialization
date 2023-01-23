@@ -8,19 +8,25 @@ public static class ServiceProviderExtensions
 {
     public static async Task InitializeAsync(this IServiceProvider serviceProvider)
     {
-        var initializers = GetAllInitializers(serviceProvider);
+        var initializersBatch = GetAllInitializerBatches(serviceProvider);
 
-        await Task.WhenAll(initializers.Select(initializer => initializer.InitializeAsync()));
+        foreach (var initializers in initializersBatch)
+        {
+            await Task.WhenAll(initializers.Select(initializer => initializer.InitializeAsync()));
+        }
     }
     
     public static void Initialize(this IServiceProvider serviceProvider)
     {
-        var initializers = GetAllInitializers(serviceProvider);
+        var initializersBatch = GetAllInitializerBatches(serviceProvider);
 
-        Task.WaitAll(initializers.Select(initializer => initializer.InitializeAsync()).ToArray());
+        foreach (var initializers in initializersBatch)
+        {
+            Task.WaitAll(initializers.Select(initializer => initializer.InitializeAsync()).ToArray());
+        }
     }
 
-    private static IEnumerable<IInitializer> GetAllInitializers(IServiceProvider serviceProvider)
+    private static IOrderedEnumerable<IGrouping<int, IInitializer>> GetAllInitializerBatches(IServiceProvider serviceProvider)
     {
         var serviceDescriptors = GetServiceDescriptors(serviceProvider).ToArray();
         
@@ -47,7 +53,9 @@ public static class ServiceProviderExtensions
         return knownInitializers
             .Concat(initializersInFactoryMethods)
             .GroupBy(x => x.GetType())
-            .Select(x => x.First());
+            .Select(x => x.First())
+            .GroupBy(i => i.Order)
+            .OrderBy(i => i.Key);
     }
 
     private static IEnumerable<ServiceDescriptor> GetServiceDescriptors(IServiceProvider serviceProvider)
