@@ -61,4 +61,21 @@ public class Tests
             Assert.That(serviceProvider.GetRequiredService<SomeClass2>().InitializeCount, Is.EqualTo(1));
         });
     }
+    
+    [Test]
+    public async Task Test_WithFactoryMethods()
+    {
+        var services = new ServiceCollection();
+
+        services.AddSingleton<ISomeInterface>(sp => new SomeClass())
+            .AddSingleton(sp => new SomeClass2());
+
+        var serviceProvider = await services.BuildAndInitializeServicesAsync();
+        
+        Assert.Multiple(() =>
+        {
+            Assert.That(serviceProvider.GetRequiredService<ISomeInterface>().InitializeCount, Is.EqualTo(1));
+            Assert.That(serviceProvider.GetRequiredService<SomeClass2>().InitializeCount, Is.EqualTo(1));
+        });
+    }
 }

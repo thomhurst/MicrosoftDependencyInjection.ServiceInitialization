@@ -47,6 +47,7 @@ public static class ServiceProviderExtensions
             .Cast<IInitializer>();
 
         var initializersInFactoryMethods = implementationFactories
+            .Where(sd => IsFactoryInitializer(sd.ImplementationFactory!))
             .Select(sd => serviceProvider.GetService(sd.ServiceType))
             .OfType<IInitializer>();
 
@@ -56,6 +57,21 @@ public static class ServiceProviderExtensions
             .Select(x => x.First())
             .GroupBy(i => i.Order)
             .OrderBy(i => i.Key);
+    }
+
+    private static bool IsFactoryInitializer(Func<IServiceProvider,object> implementationFactory)
+    {
+        var obj = implementationFactory.Method.ReturnType;
+
+        if (IsInitializer(obj))
+        {
+            return true;
+        }
+        
+        return AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(assembly => assembly.GetTypes())
+            .Where(type => obj.IsAssignableFrom(type))
+            .Any(IsInitializer);
     }
 
     private static IEnumerable<ServiceDescriptor> GetServiceDescriptors(IServiceProvider serviceProvider)
@@ -87,5 +103,5 @@ public static class ServiceProviderExtensions
     }
 
     private static bool IsInitializer(object obj) => obj is IInitializer;
-    private static bool IsInitializer(Type type) => type.GetInterfaces().Contains(typeof(IInitializer));
+    private static bool IsInitializer(Type type) => typeof(IInitializer).IsAssignableFrom(type);
 }
