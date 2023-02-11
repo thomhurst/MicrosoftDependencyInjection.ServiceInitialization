@@ -28,7 +28,11 @@ public static class ServiceProviderExtensions
 
     private static IOrderedEnumerable<IGrouping<int, IInitializer>> GetAllInitializerBatches(IServiceProvider serviceProvider)
     {
-        var serviceDescriptors = GetServiceDescriptors(serviceProvider).ToArray();
+        using var serviceScope = serviceProvider.CreateScope();
+
+        var scopedServiceProvider = serviceScope.ServiceProvider;
+
+        var serviceDescriptors = GetServiceDescriptors(scopedServiceProvider).ToArray();
         
         var implementationTypes = serviceDescriptors
             .Where(sd => sd.ImplementationType != null)
@@ -43,12 +47,12 @@ public static class ServiceProviderExtensions
 
         var knownInitializers = implementationInstances.Select(sd => sd.ServiceType)
             .Concat(implementationTypes.Select(sd => sd.ServiceType))
-            .Select(serviceProvider.GetService)
+            .Select(scopedServiceProvider.GetService)
             .Cast<IInitializer>();
 
         var initializersInFactoryMethods = implementationFactories
             .Where(sd => IsFactoryInitializer(sd.ImplementationFactory!))
-            .Select(sd => serviceProvider.GetService(sd.ServiceType))
+            .Select(sd => scopedServiceProvider.GetService(sd.ServiceType))
             .OfType<IInitializer>();
 
         return knownInitializers
