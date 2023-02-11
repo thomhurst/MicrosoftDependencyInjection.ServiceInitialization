@@ -37,8 +37,6 @@ public class Tests
         var app = builder.Build();
 
         await app.Services.InitializeAsync();
-
-        await app.RunAsync();
         
         Assert.Multiple(() =>
         {
@@ -54,6 +52,23 @@ public class Tests
 
         services.AddSingleton<ISomeInterface, SomeClass>()
             .AddSingleton<SomeClass2>();
+
+        var serviceProvider = await services.BuildAndInitializeServicesAsync();
+        
+        Assert.Multiple(() =>
+        {
+            Assert.That(serviceProvider.GetRequiredService<ISomeInterface>().InitializeCount, Is.EqualTo(1));
+            Assert.That(serviceProvider.GetRequiredService<SomeClass2>().InitializeCount, Is.EqualTo(1));
+        });
+    }
+    
+    [Test]
+    public async Task Test_WithFactoryMethods()
+    {
+        var services = new ServiceCollection();
+
+        services.AddSingleton<ISomeInterface>(sp => new SomeClass())
+            .AddSingleton(sp => new SomeClass2());
 
         var serviceProvider = await services.BuildAndInitializeServicesAsync();
         

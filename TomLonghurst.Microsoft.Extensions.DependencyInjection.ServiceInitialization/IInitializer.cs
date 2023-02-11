@@ -9,5 +9,4 @@ public interface IInitializer
 #else
     int Order { get; }
 #endif
-
 }
