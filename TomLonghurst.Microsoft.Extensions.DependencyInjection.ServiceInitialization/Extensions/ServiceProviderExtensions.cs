@@ -9,15 +9,23 @@ public static class ServiceProviderExtensions
     public static async Task InitializeAsync(this IServiceProvider serviceProvider)
     {
         var initializers = GetAllInitializers(serviceProvider);
-
-        await Task.WhenAll(initializers.Select(initializer => initializer.InitializeAsync()));
+        
+        foreach (var initializersInBatch in initializers.GroupBy(i => i.Order))
+        {
+            var tasksInBatch = initializersInBatch.Select(i => i.InitializeAsync());
+            await Task.WhenAll(tasksInBatch);
+        }
     }
     
     public static void Initialize(this IServiceProvider serviceProvider)
     {
         var initializers = GetAllInitializers(serviceProvider);
 
-        Task.WaitAll(initializers.Select(initializer => initializer.InitializeAsync()).ToArray());
+        foreach (var initializersInBatch in initializers.GroupBy(i => i.Order))
+        {
+            var tasksInBatch = initializersInBatch.Select(i => i.InitializeAsync()).ToArray();
+            Task.WaitAll(tasksInBatch);
+        }
     }
 
     private static IEnumerable<IInitializer> GetAllInitializers(IServiceProvider serviceProvider)
