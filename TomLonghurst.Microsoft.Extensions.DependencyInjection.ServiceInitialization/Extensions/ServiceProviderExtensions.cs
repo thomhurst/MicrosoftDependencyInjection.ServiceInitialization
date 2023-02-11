@@ -8,7 +8,11 @@ public static class ServiceProviderExtensions
 {
     public static async Task InitializeAsync(this IServiceProvider serviceProvider)
     {
-        var initializersBatch = GetAllInitializerBatches(serviceProvider);
+        using var serviceScope = serviceProvider.CreateScope();
+
+        var scopedServiceProvider = serviceScope.ServiceProvider;
+        
+        var initializersBatch = GetAllInitializerBatches(scopedServiceProvider);
 
         foreach (var initializers in initializersBatch)
         {
@@ -18,7 +22,11 @@ public static class ServiceProviderExtensions
     
     public static void Initialize(this IServiceProvider serviceProvider)
     {
-        var initializersBatch = GetAllInitializerBatches(serviceProvider);
+        using var serviceScope = serviceProvider.CreateScope();
+
+        var scopedServiceProvider = serviceScope.ServiceProvider;
+        
+        var initializersBatch = GetAllInitializerBatches(scopedServiceProvider);
 
         foreach (var initializers in initializersBatch)
         {
@@ -28,11 +36,7 @@ public static class ServiceProviderExtensions
 
     private static IOrderedEnumerable<IGrouping<int, IInitializer>> GetAllInitializerBatches(IServiceProvider serviceProvider)
     {
-        using var serviceScope = serviceProvider.CreateScope();
-
-        var scopedServiceProvider = serviceScope.ServiceProvider;
-
-        var serviceDescriptors = GetServiceDescriptors(scopedServiceProvider).ToArray();
+        var serviceDescriptors = GetServiceDescriptors(serviceProvider).ToArray();
         
         var implementationTypes = serviceDescriptors
             .Where(sd => sd.ImplementationType != null)
@@ -47,12 +51,12 @@ public static class ServiceProviderExtensions
 
         var knownInitializers = implementationInstances.Select(sd => sd.ServiceType)
             .Concat(implementationTypes.Select(sd => sd.ServiceType))
-            .Select(scopedServiceProvider.GetService)
+            .Select(serviceProvider.GetService)
             .Cast<IInitializer>();
 
         var initializersInFactoryMethods = implementationFactories
             .Where(sd => IsFactoryInitializer(sd.ImplementationFactory!))
-            .Select(sd => scopedServiceProvider.GetService(sd.ServiceType))
+            .Select(sd => serviceProvider.GetService(sd.ServiceType))
             .OfType<IInitializer>();
 
         return knownInitializers
