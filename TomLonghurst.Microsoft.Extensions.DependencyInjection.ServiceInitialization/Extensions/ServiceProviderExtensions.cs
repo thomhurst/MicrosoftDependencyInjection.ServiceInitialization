@@ -76,19 +76,13 @@ public static class ServiceProviderExtensions
             return true;
         }
         
-        return AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(assembly => assembly.GetTypes())
+        return AssemblyLoadedTypesProvider.GetLoadedTypes()
             .Where(type => obj.IsAssignableFrom(type))
             .Any(IsInitializer);
     }
 
     private static IEnumerable<ServiceDescriptor> GetServiceDescriptors(IServiceProvider serviceProvider)
     {
-        if (serviceProvider is InitializableServiceProvider initializableServiceProvider)
-        {
-            return initializableServiceProvider.ServiceDescriptors;
-        }
-
         var serviceDescriptorsWrapper = serviceProvider.GetService<ServiceDescriptorsWrapper>();
         
         if (serviceDescriptorsWrapper != null)
@@ -96,9 +90,16 @@ public static class ServiceProviderExtensions
             return serviceDescriptorsWrapper.ServiceDescriptors;
         }
         
+        var rootScope = serviceProvider;
+
+        if (rootScope is not ServiceProvider)
+        {
+            rootScope = (IServiceProvider) rootScope.GetType().GetProperty("RootProvider", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(rootScope);
+        }
+
         var callSiteFactory= typeof(ServiceProvider)
             .GetProperty("CallSiteFactory", BindingFlags.Instance | BindingFlags.NonPublic)?
-            .GetValue(serviceProvider);
+            .GetValue(rootScope);
 
         if (callSiteFactory?.GetType()
                 .GetField("_descriptors", BindingFlags.Instance | BindingFlags.NonPublic)?
