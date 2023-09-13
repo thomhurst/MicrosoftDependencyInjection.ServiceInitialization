@@ -8,9 +8,9 @@ public static class ServiceProviderExtensions
 {
     public static async Task InitializeAsync(this IServiceProvider serviceProvider)
     {
-        var isScoped = serviceProvider is not ServiceProvider;
+        var isScopedServiceProvider = serviceProvider is not ServiceProvider;
         
-        var initializersBatch = GetAllInitializerBatches(serviceProvider, isScoped);
+        var initializersBatch = GetAllInitializerBatches(serviceProvider, isScopedServiceProvider);
 
         foreach (var initializers in initializersBatch)
         {
@@ -24,7 +24,7 @@ public static class ServiceProviderExtensions
     }
 
     private static IOrderedEnumerable<IGrouping<int, IInitializer>> GetAllInitializerBatches(
-        IServiceProvider serviceProvider, bool isScoped)
+        IServiceProvider serviceProvider, bool isScopedServiceProvider)
     {
         var serviceDescriptors = GetServiceDescriptors(serviceProvider).ToArray();
 
@@ -41,12 +41,12 @@ public static class ServiceProviderExtensions
 
         var knownInitializers = implementationInstances.Select(sd => sd)
             .Concat(implementationTypes.Select(sd => sd))
-            .Select(sd => GetService(serviceProvider, sd, isScoped))
+            .Select(sd => GetService(serviceProvider, sd, isScopedServiceProvider))
             .OfType<IInitializer>();
 
         var initializersInFactoryMethods = implementationFactories
             .Where(sd => IsFactoryInitializer(sd.ImplementationFactory!))
-            .Select(sd => GetService(serviceProvider, sd, isScoped))
+            .Select(sd => GetService(serviceProvider, sd, isScopedServiceProvider))
             .OfType<IInitializer>();
 
         return knownInitializers
@@ -58,9 +58,9 @@ public static class ServiceProviderExtensions
     }
 
     private static object? GetService(IServiceProvider serviceProvider, ServiceDescriptor serviceDescriptor,
-        bool isScoped)
+        bool isScopedServiceProvider)
     {
-        if (isScoped && serviceDescriptor.Lifetime != ServiceLifetime.Scoped)
+        if (!isScopedServiceProvider && serviceDescriptor.Lifetime == ServiceLifetime.Scoped)
         {
             return null;
         }
