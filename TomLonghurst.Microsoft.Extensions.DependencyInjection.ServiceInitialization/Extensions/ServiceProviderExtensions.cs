@@ -8,9 +8,7 @@ public static class ServiceProviderExtensions
 {
     public static async Task InitializeAsync(this IServiceProvider serviceProvider)
     {
-        var isScopedServiceProvider = serviceProvider is not ServiceProvider;
-        
-        var initializersBatch = GetAllInitializerBatches(serviceProvider, isScopedServiceProvider);
+        var initializersBatch = GetAllInitializerBatches(serviceProvider);
 
         foreach (var initializers in initializersBatch)
         {
@@ -23,31 +21,35 @@ public static class ServiceProviderExtensions
         InitializeAsync(serviceProvider).GetAwaiter().GetResult();
     }
 
-    private static IOrderedEnumerable<IGrouping<int, IInitializer>> GetAllInitializerBatches(
-        IServiceProvider serviceProvider, bool isScopedServiceProvider)
+    private static IOrderedEnumerable<IGrouping<int, IInitializer>> GetAllInitializerBatches(IServiceProvider serviceProvider)
     {
-        var serviceDescriptors = GetServiceDescriptors(serviceProvider).ToArray();
+        var serviceDescriptors = GetServiceDescriptors(serviceProvider).ToList();
 
         var implementationTypes = serviceDescriptors
             .Where(sd => sd.ImplementationType != null)
-            .Where(sd => IsInitializer(sd.ImplementationType!));
+            .Where(sd => IsInitializer(sd.ImplementationType!))
+            .ToList();
 
         var implementationInstances = serviceDescriptors
             .Where(sd => sd.ImplementationInstance != null)
-            .Where(sd => IsInitializer(sd.ImplementationInstance!));
+            .Where(sd => IsInitializer(sd.ImplementationInstance!))
+            .ToList();
 
         var implementationFactories = serviceDescriptors
-            .Where(sd => sd.ImplementationFactory != null);
+            .Where(sd => sd.ImplementationFactory != null)
+            .ToList();
 
         var knownInitializers = implementationInstances.Select(sd => sd)
             .Concat(implementationTypes.Select(sd => sd))
-            .Select(sd => GetService(serviceProvider, sd, isScopedServiceProvider))
-            .OfType<IInitializer>();
+            .Select(sd => GetService(serviceProvider, sd))
+            .OfType<IInitializer>()
+            .ToList();
 
         var initializersInFactoryMethods = implementationFactories
             .Where(sd => IsFactoryInitializer(sd.ImplementationFactory!))
-            .Select(sd => GetService(serviceProvider, sd, isScopedServiceProvider))
-            .OfType<IInitializer>();
+            .Select(sd => GetService(serviceProvider, sd))
+            .OfType<IInitializer>()
+            .ToList();
 
         return knownInitializers
             .Concat(initializersInFactoryMethods)
@@ -57,15 +59,21 @@ public static class ServiceProviderExtensions
             .OrderBy(i => i.Key);
     }
 
-    private static object? GetService(IServiceProvider serviceProvider, ServiceDescriptor serviceDescriptor,
-        bool isScopedServiceProvider)
+    private static object? GetService(IServiceProvider serviceProvider, ServiceDescriptor serviceDescriptor)
     {
-        if (!isScopedServiceProvider && serviceDescriptor.Lifetime == ServiceLifetime.Scoped)
+        if (serviceDescriptor.Lifetime != ServiceLifetime.Singleton)
         {
-            return null;
+            throw new Exception(
+                $"Service Provider Initializers are only supported for Singletons. {ServiceDescriptorImplementationType()} is {serviceDescriptor.Lifetime}");
         }
-        
+
         return serviceProvider.GetService(serviceDescriptor.ServiceType);
+
+        string ServiceDescriptorImplementationType()
+        {
+            var type = serviceDescriptor.ImplementationType ?? serviceDescriptor.ImplementationInstance?.GetType() ?? serviceDescriptor.ServiceType;
+            return type.Name;
+        }
     }
 
     private static bool IsFactoryInitializer(Func<IServiceProvider,object> implementationFactory)
@@ -116,13 +124,6 @@ public static class ServiceProviderExtensions
         }
 
         return rootScope;
-    }
-    
-    internal static IServiceProvider GetScopedServiceProvider(this IServiceProvider serviceProvider)
-    {
-        return serviceProvider is ServiceProvider 
-            ? serviceProvider.CreateAsyncScope().ServiceProvider 
-            : serviceProvider;
     }
 
     private static bool IsInitializer(object obj) => obj is IInitializer;
