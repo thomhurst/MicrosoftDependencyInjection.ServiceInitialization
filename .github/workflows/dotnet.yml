@@ -33,7 +33,7 @@ jobs:
         uses: microsoft/setup-msbuild@v1.3.1
       - name: Run Pipeline
         run: dotnet run -c Release
-        working-directory: "EnumerableAsyncProcessor.Pipeline"
+        working-directory: "TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.Pipeline"
         env:
           DOTNET_ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Development' }}
           NuGet__ApiKey: ${{ github.ref == 'refs/heads/main' && secrets.NuGet__ApiKey || null }}
