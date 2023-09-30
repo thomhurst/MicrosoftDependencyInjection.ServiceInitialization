@@ -9,7 +9,6 @@
     
     <PropertyGroup>
         <Authors>Tom Longhurst</Authors>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
     <ItemGroup>
