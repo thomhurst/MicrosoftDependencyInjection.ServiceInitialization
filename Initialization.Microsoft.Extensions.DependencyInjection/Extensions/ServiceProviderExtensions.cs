@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
+using Initialization.Microsoft.Extensions.DependencyInjection.Exceptions;
 using Microsoft.Extensions.DependencyInjection;
-using TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.Exceptions;
 
-namespace TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.Extensions;
+namespace Initialization.Microsoft.Extensions.DependencyInjection.Extensions;
 
 public static class ServiceProviderExtensions
 {

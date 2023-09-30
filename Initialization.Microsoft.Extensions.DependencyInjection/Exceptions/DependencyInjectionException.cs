@@ -1,4 +1,4 @@
-namespace TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.Exceptions;
+namespace Initialization.Microsoft.Extensions.DependencyInjection.Exceptions;
 
 public class DependencyInjectionException : Exception
 {

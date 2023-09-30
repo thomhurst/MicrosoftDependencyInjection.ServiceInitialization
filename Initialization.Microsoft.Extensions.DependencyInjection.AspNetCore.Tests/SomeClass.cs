@@ -1,6 +1,6 @@
-namespace TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.AspNetCore.Tests;
+namespace Initialization.Microsoft.Extensions.DependencyInjection.AspNetCore.Tests;
 
-public class SomeClass2 : IInitializer
+public class SomeClass : ISomeInterface, IInitializer
 {
     public int InitializeCount { get; private set; }
 
