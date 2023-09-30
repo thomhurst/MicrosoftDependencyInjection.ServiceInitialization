@@ -1,4 +1,4 @@
-﻿namespace TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization;
+﻿namespace Initialization.Microsoft.Extensions.DependencyInjection;
 
 public interface IInitializer
 {

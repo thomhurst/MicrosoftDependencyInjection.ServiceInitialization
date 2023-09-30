@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization;
+namespace Initialization.Microsoft.Extensions.DependencyInjection;
 
 internal static class AssemblyLoadedTypesProvider
 {

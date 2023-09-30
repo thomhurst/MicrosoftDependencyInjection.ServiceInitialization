@@ -1,8 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization", "TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization\TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.csproj", "{07D42676-3216-4C13-9446-8DAA74010266}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Initialization.Microsoft.Extensions.DependencyInjection", "Initialization.Microsoft.Extensions.DependencyInjection\Initialization.Microsoft.Extensions.DependencyInjection.csproj", "{07D42676-3216-4C13-9446-8DAA74010266}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.AspNetCore.Tests", "TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.AspNetCore.Tests\TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.AspNetCore.Tests.csproj", "{F4EDE97D-0E3B-40C9-9349-BA5FC7173159}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Initialization.Microsoft.Extensions.DependencyInjection.AspNetCore.Tests", "Initialization.Microsoft.Extensions.DependencyInjection.AspNetCore.Tests\Initialization.Microsoft.Extensions.DependencyInjection.AspNetCore.Tests.csproj", "{F4EDE97D-0E3B-40C9-9349-BA5FC7173159}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Initialization.Microsoft.Extensions.DependencyInjection.Pipeline", "Initialization.Microsoft.Extensions.DependencyInjection.Pipeline\Initialization.Microsoft.Extensions.DependencyInjection.Pipeline.csproj", "{27CE4F98-754B-47EA-8DAD-C3569A6A3455}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +23,12 @@ Global
 		{F4EDE97D-0E3B-40C9-9349-BA5FC7173159}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4EDE97D-0E3B-40C9-9349-BA5FC7173159}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4EDE97D-0E3B-40C9-9349-BA5FC7173159}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27CE4F98-754B-47EA-8DAD-C3569A6A3455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27CE4F98-754B-47EA-8DAD-C3569A6A3455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27CE4F98-754B-47EA-8DAD-C3569A6A3455}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27CE4F98-754B-47EA-8DAD-C3569A6A3455}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

@@ -1,8 +1,8 @@
+using Initialization.Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.Extensions;
 
-namespace TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.AspNetCore.Tests;
+namespace Initialization.Microsoft.Extensions.DependencyInjection.AspNetCore.Tests;
 
 public class Tests
 {

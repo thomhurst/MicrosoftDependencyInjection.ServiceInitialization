@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentAssertions" Version="6.12.0" />
+      <PackageReference Include="ModularPipelines.Git" Version="2.10.6" />
+      <PackageReference Include="ModularPipelines.NuGet" Version="2.10.6" />
+      <PackageReference Include="TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization" Version="1.2.3" />
+    </ItemGroup>
+
+</Project>

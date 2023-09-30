@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization\TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization.csproj" />
+      <ProjectReference Include="..\Initialization.Microsoft.Extensions.DependencyInjection\Initialization.Microsoft.Extensions.DependencyInjection.csproj" />
     </ItemGroup>
 
 </Project>

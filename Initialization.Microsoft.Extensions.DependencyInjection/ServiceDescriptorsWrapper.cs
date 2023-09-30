@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization;
+namespace Initialization.Microsoft.Extensions.DependencyInjection;
 
 internal class ServiceDescriptorsWrapper
 {
