@@ -13,7 +13,7 @@ This means:
 
 ## Install via Nuget
 
- `TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization`
+ `Initialization.Microsoft.Extensions.DependencyInjection`
 
 ## Usage
 
