@@ -2,7 +2,6 @@
 using ModularPipelines.Attributes;
 using ModularPipelines.Context;
 using ModularPipelines.FileSystem;
-using ModularPipelines.Models;
 using ModularPipelines.Modules;
 
 namespace Initialization.Microsoft.Extensions.DependencyInjection.Pipeline.Modules.LocalMachine;
