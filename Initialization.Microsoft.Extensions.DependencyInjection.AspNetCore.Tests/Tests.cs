@@ -14,7 +14,7 @@ public class Tests
         builder.Services.AddSingleton<ISomeInterface, SomeClass>()
             .AddSingleton<SomeClass2>();
 
-        var app = builder.Build();
+        await using var app = builder.Build();
 
         await app.Services.InitializeAsync();
         
@@ -34,7 +34,7 @@ public class Tests
             .AddInitializers()
             .AddSingleton<SomeClass2>();
 
-        var app = builder.Build();
+        await using var app = builder.Build();
 
         await app.Services.InitializeAsync();
         
