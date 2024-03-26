@@ -53,8 +53,6 @@ public static class ServiceProviderExtensions
 
         return knownInitializers
             .Concat(initializersInFactoryMethods)
-            .GroupBy(x => x.GetType())
-            .Select(x => x.First())
             .GroupBy(i => i.Order)
             .OrderBy(i => i.Key);
     }
