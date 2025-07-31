@@ -9,8 +9,8 @@
 
     <ItemGroup>
       <PackageReference Include="FluentAssertions" Version="8.3.0" />
-      <PackageReference Include="ModularPipelines.DotNet" Version="2.44.45" />
-      <PackageReference Include="ModularPipelines.Git" Version="2.44.45" />
+      <PackageReference Include="ModularPipelines.DotNet" Version="2.44.121" />
+      <PackageReference Include="ModularPipelines.Git" Version="2.44.121" />
       <PackageReference Include="TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization" Version="1.2.3" />
     </ItemGroup>
 
