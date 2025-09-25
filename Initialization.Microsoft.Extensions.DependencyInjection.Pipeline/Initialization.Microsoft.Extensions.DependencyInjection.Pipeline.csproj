@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentAssertions" Version="8.3.0" />
+      <PackageReference Include="FluentAssertions" Version="8.7.0" />
       <PackageReference Include="ModularPipelines.DotNet" Version="2.46.1" />
       <PackageReference Include="ModularPipelines.Git" Version="2.46.1" />
       <PackageReference Include="TomLonghurst.Microsoft.Extensions.DependencyInjection.ServiceInitialization" Version="1.2.3" />
