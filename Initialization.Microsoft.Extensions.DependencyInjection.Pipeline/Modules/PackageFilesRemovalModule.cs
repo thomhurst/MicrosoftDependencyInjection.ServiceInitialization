@@ -1,20 +1,20 @@
+using ModularPipelines;
 using ModularPipelines.Context;
-using ModularPipelines.Git.Extensions;
-using ModularPipelines.Modules;
 
 namespace Initialization.Microsoft.Extensions.DependencyInjection.Pipeline.Modules;
 
-public class PackageFilesRemovalModule : Module
+public class PackageFilesRemovalModule : Module<None>
 {
-    protected override async Task<IDictionary<string, object>?> ExecuteAsync(IPipelineContext context, CancellationToken cancellationToken)
+    protected override async Task<None> ExecuteAsync(IModuleContext context, CancellationToken cancellationToken)
     {
-        var packageFiles = context.Git().RootDirectory.GetFiles(path => path.Extension is ".nupkg");
+        var git = await context.Tools.Git.Information.GetRequiredInfoAsync(cancellationToken);
+        var packageFiles = git.Root.GetFiles(path => path.Extension is ".nupkg");
 
         foreach (var packageFile in packageFiles)
         {
             packageFile.Delete();
         }
 
-        return await NothingAsync();
+        return None.Value;
     }
 }
